@@ -37,7 +37,6 @@ require_once RVA_MAG_DOCROOT . '/lib/structure/advertising.php';    // DFP Ad sh
 require_once RVA_MAG_DOCROOT . '/vendor/taxonomy-single-term/class.taxonomy-single-term.php';
 require_once RVA_MAG_DOCROOT . '/vendor/taxonomy-single-term/walker.taxonomy-single-term.php';
 
-
 /* plugin install and uninstall hooks */ 
 register_activation_hook(__FILE__, 'rva_activation' );
 register_deactivation_hook(__FILE__, 'rva_deactivation');

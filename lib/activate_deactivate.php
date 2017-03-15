@@ -13,8 +13,9 @@ function rva_deactivation(){
 
 //add_action('after_switch_theme', 'rva_activation');
 function rva_activation(){
-    //$options1=array();
-	//add_option('rva_socialmedia_options',  serialize($options1));
+    rva_create_primary_memu();
+	rva_create_secondary_memu();
+	rva_create_pages();
 }
 
 /**
@@ -23,11 +24,11 @@ function rva_activation(){
 function rva_create_primary_memu() {
 
 	$primary_menu_items = [
-		'politics' => 'POLITICS',
 		'music' => 'MUSIC',
 		'art' => 'ART',
-		'photo' => 'PHOTO',
+		'politics' => 'POLITICS',
 		'eatdrink' => 'EAT DRINK',
+		'photo' => 'PHOTO',
 		'watch' => 'WATCH',
 		'events' => 'EVENTS',
 		'magazine' => 'MAGAZINE'
