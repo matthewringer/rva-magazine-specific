@@ -9,6 +9,12 @@ function rva_deactivation(){
     );
 	//delete_option('rva_socialmedia_options',  serialize($socialMediaOptions));
 
+	// Delete all menus
+	$primary_menu_name = 'RVA Primary Menu';
+	wp_delete_nav_menu($primary_menu_name);
+	
+	$secondary_menu_name = 'RVA Secondary Menu';
+	wp_delete_nav_menu($secondary_menu_name);
 }
 
 //add_action('after_switch_theme', 'rva_activation');
