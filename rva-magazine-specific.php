@@ -29,6 +29,8 @@ require_once RVA_MAG_DOCROOT . '/lib/admin/admin-ajax.php';         // API for i
 require_once RVA_MAG_DOCROOT . '/lib/admin/admin-posts.php';        // For adding/editing custom post options to RVA
 require_once RVA_MAG_DOCROOT . '/lib/admin/admin-functions.php';    // 
 require_once RVA_MAG_DOCROOT . '/lib/admin/admin-settings.php';     // RVA Magazine Theme settings
+require_once RVA_MAG_DOCROOT . '/lib/admin/admin-stats.php';     // RVA Magazine Theme settings
+
 
 // Structure
 require_once RVA_MAG_DOCROOT . '/lib/structure/advertising.php';    // DFP Ad short code
