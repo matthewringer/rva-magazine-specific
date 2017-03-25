@@ -12,7 +12,7 @@ function rva_ajax_load_more() {
 	$max_pages = $loop->max_num_pages;
 
 	if( $loop->have_posts() ): while( $loop->have_posts() ): $loop->the_post();
-		rva_post_thumbnail();
+		echo do_shortcode('[rva_post_thumbnail]');
 	endwhile; endif; wp_reset_postdata();
 	
 	echo do_shortcode('[hr]');
