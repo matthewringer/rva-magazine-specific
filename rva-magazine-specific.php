@@ -25,7 +25,7 @@ require_once RVA_MAG_DOCROOT.'/lib/activate_deactivate.php'; // Activation and d
 require_once RVA_MAG_DOCROOT.'/lib/functions.php';      // Globally available utility functions 
 
 // Admin
-require_once RVA_MAG_DOCROOT . '/lib/admin/admin-ajax.php';         // API for infinate scroll 
+//require_once RVA_MAG_DOCROOT . '/lib/admin/admin-ajax.php';         // API for infinate scroll 
 require_once RVA_MAG_DOCROOT . '/lib/admin/admin-posts.php';        // For adding/editing custom post options to RVA
 require_once RVA_MAG_DOCROOT . '/lib/admin/admin-functions.php';    // 
 require_once RVA_MAG_DOCROOT . '/lib/admin/admin-settings.php';     // RVA Magazine Theme settings

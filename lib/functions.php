@@ -31,23 +31,6 @@ function get_current_page_url() {
 			}
  }
 
- function rva_load_more_posts() {
-	
-	wp_enqueue_script( 'rva-load-more', RVA_MAG_PLUGURL . '/assets/js/load-more.js', array( 'jquery' ), '1.0', true );
-
-	//wp_enqueue_script( 'rva-load-more', get_stylesheet_directory_uri() . '/js/load-more.js', array( 'jquery' ), '1.0', true );
-	
-	global $wp_query;
-	$args = array(
-		'url'   => admin_url( 'admin-ajax.php' ),
-		'query' => $wp_query->query,
-	);
-	wp_localize_script( 'rva-load-more', 'rvaloadmore', $args );
-
- }
-
-
-
 /**
  * 
  * Place "rva_set_post_views(get_the_ID());" in post or page that views should be tracked.
