@@ -76,7 +76,7 @@ remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
  * @param	array	: authors
  * @return	array	
  */
-function rva_popular_posts_query( $posts_per_page, $date_after = "", $authors=[] ) {
+function rva_popular_posts_query( $posts_per_page, $date_after = "", $authors=null ) {
 	
 	$query = [
 		'posts_per_page' => $posts_per_page,
@@ -85,7 +85,7 @@ function rva_popular_posts_query( $posts_per_page, $date_after = "", $authors=[]
 		'order' => 'DESC',
 	];
 
-	if ( !empty( $authors ) ) { 
+	if ( !empty( $authors ) && $authors[0] != '' ) {
 		$query['author__in'] = $authors; 
 	}
 
@@ -102,10 +102,14 @@ function rva_popular_posts_query( $posts_per_page, $date_after = "", $authors=[]
  */
  function rva_popular_posts($atts) {
 
-	extract( shortcode_atts( [ 'authors' => '', 'date_after' => '1 week ago', 'posts_per_page' => 5 ], $atts) );
-	$popular_posts = new WP_Query(rva_popular_posts_query( $posts_per_page, $date_after, explode(", ",$authors)));
+	extract( shortcode_atts( [ 'authors' => null, 'date_after' => '1 week ago', 'posts_per_page' => 5 ], $atts) );
+	$args = rva_popular_posts_query( $posts_per_page, $date_after, explode(", ",$authors));
+	$popular_posts = new WP_Query($args);
 
 	ob_start();
+
+	//echo var_dump($authors);
+	
 	?>
 	<div class="rva-gutter-box rva-popular-posts">
 		<h2>MOST POPULAR<h2>
