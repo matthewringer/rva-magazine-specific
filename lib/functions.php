@@ -55,37 +55,62 @@ remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
  *
  *
  */
- function rva_get_post_views($postID){
-    $count_key = 'rva_post_views_count';
-    $count = get_post_meta($postID, $count_key, true);
-    if($count==''){
-        delete_post_meta($postID, $count_key);
-        add_post_meta($postID, $count_key, '0');
-        return "0 View";
-    }
-    return $count.' Views';
+ function rva_get_post_views($postID) {
+
+	$count_key = 'rva_post_views_count';
+	$count = get_post_meta($postID, $count_key, true);
+	if($count==''){
+		delete_post_meta($postID, $count_key);
+		add_post_meta($postID, $count_key, '0');
+		return "0 View";
+	}
+
+	return $count.' Views';
+
 }
+
+/**
+ * Returns query params for popular posts list
+ * @param	string	: posts_per_page
+ * @param	string	: date_after
+ * @param	array	: authors
+ * @return	array	
+ */
+function rva_popular_posts_query( $posts_per_page, $date_after = "", $authors=[] ) {
+	
+	$query = [
+		'posts_per_page' => $posts_per_page,
+		'meta_key' => 'rva_post_views_count',
+		'orderby' => 'meta_value_num',
+		'order' => 'DESC',
+	];
+
+	if ( !empty( $authors ) ) { 
+		$query['author__in'] = $authors; 
+	}
+
+	if ( !empty( $date_after ) ) {
+		$query['date_query'] = [[ 'after' => $date_after ]]; 
+	}
+
+	return $query;
+}
+
 
 /**
  * ShortCode Popular Posts
  */
  function rva_popular_posts($atts) {
 
-	$popularpost = new WP_Query( [
-		'posts_per_page' => 5, 
-		'meta_key' => 'rva_post_views_count', 
-		'orderby' => 'meta_value_num', 
-		'order' => 'DESC',
-		// 'date_query' => [[
-        //     'after' => '1 week ago']]
-		] );
-		//TODO: from the last 7 days.
+	extract( shortcode_atts( [ 'authors' => '', 'date_after' => '1 week ago', 'posts_per_page' => 5 ], $atts) );
+	$popular_posts = new WP_Query(rva_popular_posts_query( $posts_per_page, $date_after, explode(", ",$authors)));
+
 	ob_start();
 	?>
 	<div class="rva-gutter-box rva-popular-posts">
 		<h2>MOST POPULAR<h2>
 		<table class="decimal">
-		<?php $i = 0; while ( $popularpost->have_posts() ) : $popularpost->the_post(); $i++; ?>
+		<?php $i = 0; while ( $popular_posts->have_posts() ) : $popular_posts->the_post(); $i++; ?>
 		<tr>
 		<td><?php echo $i; ?></td><td> <a href="<?php echo get_the_permalink();?>" > <?php echo the_title(); ?> </a> </td>
 		</tr>
@@ -93,9 +118,11 @@ remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 		</table>
 	</div>
 	<?php
+	
 	wp_reset_postdata();
 	$content = ob_get_clean();
 	return $content;
+
  } add_shortcode('rva_popular_posts','rva_popular_posts');
 
 
