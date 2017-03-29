@@ -30,6 +30,7 @@ function rva_activation(){
 function rva_create_primary_memu() {
 
 	$primary_menu_items = [
+		'news' => 'NEWS',
 		'music' => 'MUSIC',
 		'art' => 'ART',
 		'politics' => 'POLITICS',
