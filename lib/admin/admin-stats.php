@@ -96,62 +96,62 @@ class My_Dashboard_Widget {
         printf("<li><span>Posts without Category: %u </span></li>", count($postsWithoutCategories->posts));
 
 
-        $post_with_thumbnail = new WP_Query([
-                'post_type'  => 'post',
-                'posts_per_page' => -1,
-                'meta_query' => [
-                    [
-                    'key' => '_thumbnail_id',
-                    'compare' => 'EXISTS'
-                    ],
-                    ]
-                    ]);
+        // $post_with_thumbnail = new WP_Query([
+        //         'post_type'  => 'post',
+        //         'posts_per_page' => -1,
+        //         'meta_query' => [
+        //             [
+        //             'key' => '_thumbnail_id',
+        //             'compare' => 'EXISTS'
+        //             ],
+        //             ]
+        //             ]);
 
-        printf("<li><span>Posts with Thumbnail: %u </span></li>", count($post_with_thumbnail->posts));
-         $post_with_thumbnail = new WP_Query([
-                'post_type'  => 'post',
-                'posts_per_page' => 6,
-                'meta_query' => [
-                    [
-                    'key' => '_thumbnail_id',
-                    'compare' => 'EXISTS'
-                    ],
-                    ]
-                    ]);
+        // printf("<li><span>Posts with Thumbnail: %u </span></li>", count($post_with_thumbnail->posts));
+        //  $post_with_thumbnail = new WP_Query([
+        //         'post_type'  => 'post',
+        //         'posts_per_page' => 6,
+        //         'meta_query' => [
+        //             [
+        //             'key' => '_thumbnail_id',
+        //             'compare' => 'EXISTS'
+        //             ],
+        //             ]
+        //             ]);
         
-        while ( $post_with_thumbnail->have_posts() ) : $post_with_thumbnail->the_post(); 
-            vprintf('<li><a href="%s"> %s </a></li>', [ get_permalink( $post->ID ), get_the_title() ] );
+        // while ( $post_with_thumbnail->have_posts() ) : $post = $post_with_thumbnail->the_post(); 
+        //     vprintf('<li><a href="%s"> %s </a></li>', [ get_permalink( $post->ID ), get_the_title() ] );
             
-            $post_attachment_metadata = wp_get_attachment_metadata( $post_id );
-            print("<li><span>--$post_attachment_metadata</span></li>");
+        //     $post_attachment_metadata = wp_get_attachment_metadata( $post_id );
+        //     print("<li><span>--$post_attachment_metadata</span></li>");
 
-        endwhile;
+        // endwhile;
 
 
-        $post_without_thumbnail = new WP_Query(array(
-            'post_type'  => 'post',
-            'posts_per_page' => -1,
-            'meta_query' => array(
-                array(
-                'key' => '_thumbnail_id',
-                'compare' => 'NOT EXISTS'
-                ),
-            )));
-        printf("<li><span>Posts without Thumbnail: %u </span></li>", count($post_without_thumbnail->posts));
+        // $post_without_thumbnail = new WP_Query(array(
+        //     'post_type'  => 'post',
+        //     'posts_per_page' => -1,
+        //     'meta_query' => array(
+        //         array(
+        //         'key' => '_thumbnail_id',
+        //         'compare' => 'NOT EXISTS'
+        //         ),
+        //     )));
+        // printf("<li><span>Posts without Thumbnail: %u </span></li>", count($post_without_thumbnail->posts));
 
-        $post_without_thumbnail = new WP_Query(array(
-            'post_type'  => 'post',
-            'posts_per_page' => 10,
-            'meta_query' => array(
-                array(
-                'key' => '_thumbnail_id',
-                'compare' => 'NOT EXISTS'
-                ),
-            )));
-        printf("<li><span>Posts without Thumbnail: %u </span></li>", count($post_without_thumbnail->posts));
-        while ( $post_without_thumbnail->have_posts() ) : $post_without_thumbnail->the_post(); 
-            vprintf('<li><a href="%s"> %s </a></li>', [ get_permalink( $post->ID ), get_the_title() ] );
-        endwhile;
+        // $post_without_thumbnail = new WP_Query(array(
+        //     'post_type'  => 'post',
+        //     'posts_per_page' => 10,
+        //     'meta_query' => array(
+        //         array(
+        //         'key' => '_thumbnail_id',
+        //         'compare' => 'NOT EXISTS'
+        //         ),
+        //     )));
+        // printf("<li><span>Posts without Thumbnail: %u </span></li>", count($post_without_thumbnail->posts));
+        // while ( $post_without_thumbnail->have_posts() ) : $post = $post_without_thumbnail->the_post(); 
+        //     vprintf('<li><a href="%s"> %s </a></li>', [ get_permalink( $post->ID ), get_the_title() ] );
+        // endwhile;
         ?>
         </ul><?php
     }

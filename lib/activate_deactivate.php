@@ -34,50 +34,115 @@ function rva_create_primary_memu() {
 		'music' => 'MUSIC',
 		'art' => 'ART',
 		'politics' => 'POLITICS',
-		'eatdrink' => 'EAT DRINK',
+		'eatdrink' => [ 'name' => 'EAT DRINK', 'children' => [
+			'beermadness' => 'BEER Madness',
+			'readerspoll' => 'Readers Poll',
+			'rvaontap' => 'RVA ON TAP',
+			'goodeats' => 'GOOD EATS'
+		] ],
 		'photo' => 'PHOTO',
 		'watch' => 'WATCH',
 		'events' => 'EVENTS',
 		'magazine' => 'MAGAZINE'
 	];
 
-	//Create Categories if necessary
-	foreach ( $primary_menu_items as $key => $value ) {
-		$cat = get_category_by_slug( $key );
-		if( $cat == false ) {
-			write_log($key);
-			wp_insert_category([
-				'category_nicename' => $key,
-				'cat_name' => $value
-			]);
-		}
+	//create ctegories sub categories recursivly
+	try {
+		rva_create_categories_and_childen($primary_menu_items);
+	} catch(Exception $ex){
+		write_log($ex->message);
 	}
 
     //give your menu a name
     $menu_name = 'RVA Primary Menu';
 	$menu = wp_get_nav_menu_object( $menu_name );
+
 	if(!$menu) {
+
 		$menu_id = wp_create_nav_menu($menu_name);
 		$menu = get_term_by( 'id', $menu_id , 'nav_menu' );
-		write_log('Menu Created name: '. $menu->title);
+		write_log('Menu Created name: '. $menu->name);
 
 		// Insert top level menu items.
 		foreach ( $primary_menu_items as $key => $value ) {
+			
+			$name = $value;
+			if(is_array($value)) {
+
+				$name = $value['name'];
+				$children = $value['children'];
+
+			}
+
 			wp_update_nav_menu_item($menu->term_id, 0, array(
-			'menu-item-title' =>  __($value),
+			'menu-item-title' =>  __($name),
 			//'menu-item-classes' => 'home',
 			'menu-item-url' => home_url( '/'.$key ), 
 			'menu-item-status' => 'publish'));
+
 		}
-	
+
 		//then you set the wanted theme  location
 		$locations = get_theme_mod('nav_menu_locations');
-		write_log($locations);
 		$locations['primary'] = $menu->term_id;
 		set_theme_mod( 'nav_menu_locations', $locations );
+
 	}
+
 } add_action('after_switch_theme', 'rva_create_primary_memu');
 
+
+/**
+ * Creates Categories and subcategiries recursivly
+ *
+ * @param array $categories An array of categories to add or update
+ * @param int $patent The id of the parent category (optional)
+ *
+ * @return int
+ */
+function rva_create_categories_and_childen( $categories, $parent = null ) {
+	//write_log(['create called: ', $categories, $parent]);
+
+	foreach ( $categories as $key => $value ) {
+
+		$id = null;
+		$children = null;
+		$name = $value;
+
+		write_log([$key, $id, $children, $value]);
+
+		if(is_array($value)) {
+			$name = $value['name'];
+			$children = $value['children'];
+			write_log('Should have children:'. $name);
+
+		}
+
+		$cat = get_category_by_slug( $key );
+		if( $cat == false ) {
+
+			$cat = [ 'category_nicename' => $key, 'cat_name' => $value ];
+
+			if( isset( $parent ) ) { $cat['category_parent'] = $parent; }
+
+			$id = wp_insert_category( $cat );
+
+		} else {
+
+			$id = $cat->term_id;
+
+		}
+
+		if(isset($id) && isset($children)) {
+
+			write_log('Add children for category:'. $id);
+			rva_create_categories_and_childen($children, $id);
+
+		}
+
+	}
+
+}
 
 /**
  * Create secondary menus
@@ -92,30 +157,33 @@ function rva_create_secondary_memu() {
 		'contact' => 'Contact'
 	];
 
-    //TODO: Verify all linked pages exist. 
-	
-    //give your menu a name
-    $menu_name = 'RVA Secondary Menu';
+	//TODO: Verify all linked pages exist. 
+
+	//give your menu a name
+	$menu_name = 'RVA Secondary Menu';
 	$menu = wp_get_nav_menu_object( $menu_name );
 	if(!$menu) {
+
 		$menu_id = wp_create_nav_menu($menu_name);
 		$menu = get_term_by( 'id', $menu_id , 'nav_menu' );
-		write_log('Menu Created name: '. $menu->title);
+		write_log('Menu Created name: '. $menu->name);
 
 		// Insert top level menu items.
 		foreach ( $secondary_menu_items as $key => $value ) {
+
 			wp_update_nav_menu_item($menu->term_id, 0, array(
 			'menu-item-title' =>  __($value),
 			'menu-item-url' => home_url( '/'.$key ), 
 			'menu-item-status' => 'publish'));
+
 		}
-	
 		//then you set the wanted theme  location
 		$locations = get_theme_mod('nav_menu_locations');
-		write_log($locations);
 		$locations['secondary'] = $menu->term_id;
 		set_theme_mod( 'nav_menu_locations', $locations );
+
 	}
+
 } add_action('after_switch_theme', 'rva_create_secondary_memu');
 
 
