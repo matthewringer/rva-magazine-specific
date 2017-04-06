@@ -54,17 +54,15 @@ function rva_post_featured_box_save( $post_id, $post ) {
 
   $meta_value = ( isset( $_POST['post_featured'] ) ? sanitize_text_field( $_POST['post_featured'] ) : '0' );
   if($meta_value == 1) {
-    //global $wpdb;
-    //$wpdb->delete ( $wpdb->postmeta , array('meta_key' => RVA_POST_FIELDS_FEATURED_POST);
+    global $wpdb;
+    $wpdb->delete( $wpdb->postmeta , ['meta_key' => RVA_POST_FIELDS_FEATURED_POST]);
     update_post_meta( $post_id, RVA_POST_FIELDS_FEATURED_POST, $meta_value );
-  
-  } else {
-  
-    delete_post_meta( $post_id, RVA_POST_FIELDS_FEATURED_POST );
-  
-  }
 
-      
+  } else {
+
+    delete_post_meta( $post_id, RVA_POST_FIELDS_FEATURED_POST );
+
+  }
 
 } add_action( 'save_post', 'rva_post_featured_box_save', 1, 2 );
 
@@ -76,15 +74,17 @@ function rva_post_featured_box_save( $post_id, $post ) {
  */
 function rva_inpost_tagline_box() {
 
-    $post_id = get_the_ID();
-    $field = 'rva_post_tagline';
-    $custom_field = get_post_meta( $post_id, $field, true );
-	  wp_nonce_field( 'rva_post_tagline', 'rvamag_nonce' );
-	?>
+  $post_id = get_the_ID();
+  $field = 'rva_post_tagline';
+  $custom_field = get_post_meta( $post_id, $field, true );
+  wp_nonce_field( 'rva_post_tagline', 'rvamag_nonce' );
 
-    <label class="screen-reader-text" for="post_tagline"><?php _e('Tagline') ?></label><input name="post_tagline" type="text" size="50" id="post_tagline" value="<?php echo esc_attr( $custom_field );  ?>" />
+  ?>
 
-	<?php
+    <label class="screen-reader-text" for="post_tagline"><?php _e('Tagline') ?></label>
+    <input name="post_tagline" type="text" size="50" id="post_tagline" value="<?php echo esc_attr( $custom_field );  ?>" />
+
+  <?php
 
 }
 
