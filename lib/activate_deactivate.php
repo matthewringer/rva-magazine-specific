@@ -150,11 +150,14 @@ function rva_create_categories_and_childen( $categories, $parent = null ) {
 function rva_create_secondary_memu() {
 
 	$secondary_menu_items = [
-		'rss' => 'RSS',
-		'about' => 'About',
-		'advertising' => 'Advertising',
-		'contributors' => 'Contributors',
-		'contact' => 'Contact'
+		'about' => 'About', //page
+		'contact' => 'Contact', //page
+		'subscribe' => 'Subscribe', //Link to bigwrk
+		'contributors' => 'Contributors', //archive
+		'sponsors' => 'Sponsors', //page
+		//'newsletters' => 'Newsletters', //js function...
+		'advertising' => 'Advertising', //page
+
 	];
 
 	//TODO: Verify all linked pages exist. 
@@ -200,6 +203,14 @@ function rva_create_pages() {
 	);
 	rva_create_page($about_page);
 
+	$contact_page = array(	
+		'slug' => 'contact',
+		'title' => 'Contact',
+		'template' => '/page_templates/page.php',
+		'post_excerpt' => 'Contact RVA Magazine'
+	);
+	rva_create_page($contact_page);
+
 	$advertizing_page = array(
 		'slug' => 'advertising',
 		'title' =>'Advertising',
@@ -208,21 +219,15 @@ function rva_create_pages() {
 	);
 	rva_create_page($advertizing_page);
 
-	$contributors_page = array(
-		'slug' => 'contributors',
-		'title' =>'Contributors',
-		'template' => '/page_templates/contributors.php',
-		'post_excerpt' => 'RVA Magazine Contributors'
-	);
-	rva_create_page($contributors_page);
-
-	$contact_page = array(	
-		'slug' => 'contact',
-		'title' => 'Contact',
+	$sponsors_page = array(
+		'slug' => 'sponsors',
+		'title' =>'Sponsors',
 		'template' => '/page_templates/page.php',
-		'post_excerpt' => 'Contact RVA Magazine'
+		'post_excerpt' => 'RVA Magazine Sponsors'
 	);
-	rva_create_page($contact_page);
+
+	rva_create_page($sponsors_page);
+
 
 } add_action('after_switch_theme', 'rva_create_pages');
 
