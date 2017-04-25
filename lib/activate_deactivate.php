@@ -22,6 +22,7 @@ function rva_activation(){
     rva_create_primary_memu();
 	rva_create_secondary_memu();
 	rva_create_pages();
+
 }
 
 /**
@@ -91,7 +92,6 @@ function rva_create_primary_memu() {
 
 } add_action('after_switch_theme', 'rva_create_primary_memu');
 
-
 /**
  * Creates Categories and subcategiries recursivly
  *
@@ -101,7 +101,6 @@ function rva_create_primary_memu() {
  * @return int
  */
 function rva_create_categories_and_childen( $categories, $parent = null ) {
-	//write_log(['create called: ', $categories, $parent]);
 
 	foreach ( $categories as $key => $value ) {
 
@@ -112,7 +111,9 @@ function rva_create_categories_and_childen( $categories, $parent = null ) {
 		write_log([$key, $id, $children, $value]);
 
 		if(is_array($value)) {
+
 			$name = $value['name'];
+			// or add a page...
 			$children = $value['children'];
 			write_log('Should have children:'. $name);
 

@@ -255,8 +255,6 @@ function print_media_selector( $setting_id ) {
     <?php
 }
 
-
-add_filter( 'screen_layout_columns', 'rva_settings_layout_columns', 10, 2 );
 /**
  * This function sets the column layout to one for the RVA Magazine settings page.
  *
@@ -275,7 +273,7 @@ function rva_settings_layout_columns( $columns, $screen ) {
 
 	return $columns;
 
-}
+} add_filter( 'screen_layout_columns', 'rva_settings_layout_columns', 10, 2 );
 
 /**
  * This function displays the content for the CT Settings settings page, builds the forms and outputs the metaboxes.
