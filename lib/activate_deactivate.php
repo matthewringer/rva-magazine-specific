@@ -32,7 +32,9 @@ function rva_create_primary_memu() {
 
 	$primary_menu_items = [
 		'news' => 'NEWS',
-		'music' => 'MUSIC',
+		'music' => ['name' => 'MUSIC', 'children' => [ 
+			'podcasts' => 'PODCASTS'
+		] ],
 		'art' => 'ART',
 		'politics' => 'POLITICS',
 		'eatdrink' => [ 'name' => 'EAT DRINK', 'children' => [
@@ -190,48 +192,47 @@ function rva_create_secondary_memu() {
 
 } add_action('after_switch_theme', 'rva_create_secondary_memu');
 
-
 /**
- * 
+ * rva_create_pages
  */
 function rva_create_pages() {
 
-	$about_page = array(	
-		'slug' => 'about',
-		'title' =>'About',
-		'template' => '/page_templates/about.php',
-		'post_excerpt' => 'About RVA Magazine'
-	);
-	rva_create_page($about_page);
+	$pages = [ [
+			'slug' => 'about',
+			'title' =>'About',
+			'template' => 'index.php',
+			'post_excerpt' => 'About RVA Magazine'
+		],[
+			'slug' => 'contact',
+			'title' => 'Contact',
+			'template' => 'index.php',
+			'post_excerpt' => 'Contact RVA Magazine'
+		],[
+			'slug' => 'advertising',
+			'title' =>'Advertising',
+			'template' => 'index.php',
+			'post_excerpt' => 'Advertize with RVA Magazine'
+		],[
+			'slug' => 'sponsors',
+			'title' =>'Sponsors',
+			'template' => 'index.php',
+			'post_excerpt' => 'RVA Magazine Sponsors'
+		],[
+			'slug' => 'contributors',
+			'title' =>'Contributors',
+			'template' => 'includes/templates/page-contributors.php',
+			'post_excerpt' => 'RVA Magazine Contributors'
+		] ];
 
-	$contact_page = array(	
-		'slug' => 'contact',
-		'title' => 'Contact',
-		'template' => '/page_templates/page.php',
-		'post_excerpt' => 'Contact RVA Magazine'
-	);
-	rva_create_page($contact_page);
-
-	$advertizing_page = array(
-		'slug' => 'advertising',
-		'title' =>'Advertising',
-		'template' => '/page_templates/page.php',
-		'post_excerpt' => 'Advertize with RVA Magazine'
-	);
-	rva_create_page($advertizing_page);
-
-	$sponsors_page = array(
-		'slug' => 'sponsors',
-		'title' =>'Sponsors',
-		'template' => '/page_templates/page.php',
-		'post_excerpt' => 'RVA Magazine Sponsors'
-	);
-
-	rva_create_page($sponsors_page);
-
+	foreach($pages as $page ) {
+		rva_create_page($page);
+	}
 
 } add_action('after_switch_theme', 'rva_create_pages');
 
+/**
+ * rva_create_page
+ */
 function rva_create_page($page_args){
 	$page = get_page_by_path( $page_args['slug'] );
 	if(!isset($page)){
