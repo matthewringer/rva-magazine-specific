@@ -211,6 +211,7 @@ function rva_create_pages() {
 			'slug' => 'advertising',
 			'title' =>'Advertising',
 			'template' => 'index.php',
+			'template' => 'includes/templates/page-advertising.php',
 			'post_excerpt' => 'Advertize with RVA Magazine'
 		],[
 			'slug' => 'sponsors',
