@@ -9,6 +9,7 @@ use RVAMag\Admin\Input as Input;
 define( 'RVA_POST_FIELDS', 'rva_post_'); //rva_post_featured_post
 define( 'RVA_POST_FIELDS_FEATURED_POST', RVA_POST_FIELDS.'featured_post');
 define( 'RVA_NONCE', 'rvamag_nonce');
+//!defined( 'RVA_NONCE' ) || define( 'RVA_NONCE', 'rvamag_nonce');
 
 $postmeta_featured_post = RVA_POST_FIELDS_FEATURED_POST;
 

@@ -8,7 +8,7 @@ Author: My Name
 Author URI: http://example.com/
 License: GPLv2 or later
 */
-add_action('wp_dashboard_setup', array('My_Dashboard_Widget','init') );
+//add_action('wp_dashboard_setup', array('My_Dashboard_Widget','init') );
 
 class My_Dashboard_Widget {
 

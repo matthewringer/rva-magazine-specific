@@ -27,22 +27,25 @@ define( 'RVA_SETTINGS_FIELD', 'rva-magazine-settings');
 function rva_default_theme_options() {
      $options = array(
         // Social Media Profile links
-        'rva_socialmedia_twitter_url'   => 'http://twitter.com/RVAMAG',
-	    'rva_socialmedia_facebook_url'  => 'https://www.facebook.com/RVAMAG/',
-        'rva_socialmedia_instagram_url' => 'http://instagram.com/rvamag',
-        'rva_socialmedia_tumblr_url'    => 'http://rvamag.tumblr.com/',
-        'rva_socialmedia_pintrest_url'  => 'http://pinterest.com/rvamag',
-        'rva_socialmedia_youtube_url'   => 'https://www.youtube.com/user/hellorva',
+		'rva_socialmedia_account_links' => [
+			'twitter_url'   => 'http://twitter.com/RVAMAG', //rva_socialmedia_twitter_url
+			'facebook_url'  => 'https://www.facebook.com/RVAMAG/', //rva_socialmedia_facebook_url
+			'instagram_url' => 'http://instagram.com/rvamag', //rva_socialmedia_instagram_url
+			'tumblr_url'    => 'http://rvamag.tumblr.com/', //rva_socialmedia_tumblr_url
+			'pintrest_url'  => 'http://pinterest.com/rvamag', //rva_socialmedia_pintrest_url
+			'youtube_url'   => 'https://www.youtube.com/user/hellorva', //rva_socialmedia_youtube_url
+			'snapchat_url'	=> 'https://www.snapchat.com/RVAMAG', //rva_socialmedia_snapchat_url
+		],
 
-        // Like Buttons
+        // Show Like Buttons
         'rva_facebook_like_btn' => 0,
 		'rva_google_plus_btn'   => 0,
 		'rva_twitter_tweet_btn' => 0,
 
-        // Facebook
+        // Facebook Account info
         'rva_facebook_appid' => '1636311590010567',
 
-        //Front Page
+        //Front Page | depricated....
         'rva_subscribe_email_image'     => '1',
         'rva_subscribe_magazine_image'  => '1',
 
@@ -57,7 +60,7 @@ function rva_default_theme_options() {
  * @since 1.0.0
  */
 function rva_sanatize_inputs() {
-    genesis_add_options_filter( 'no_html', RVA_SETTINGS_FIELD, array('rva_socialmedia_twitter_url', 'rva_socialmedia_facebook_url', 'rva_socialmedia_instagram_url', 'rva_socialmedia_tumblr_url', 'rva_socialmedia_pintrest_url', 'rva_socialmedia_youtube_url' ) );
+    genesis_add_options_filter( 'no_html', RVA_SETTINGS_FIELD, array('rva_socialmedia_twitter_url', 'rva_socialmedia_facebook_url', 'rva_socialmedia_instagram_url', 'rva_socialmedia_tumblr_url', 'rva_socialmedia_pintrest_url', 'rva_socialmedia_youtube_url', 'rva_socialmedia_snapchat_url' ) );
 }
 
 /**
@@ -155,6 +158,9 @@ function rva_settings_boxes() {
 
 }
 
+/*
+ * Ad Placements Metabox
+ */
 function rva_ad_placements_metabox() { 
     ?>
     <p>Leaderboard:<br />
@@ -202,6 +208,9 @@ function rva_social_metabox() {
 	<p>YouTube URL:<br />
 	<input type="text" name="<?php echo RVA_SETTINGS_FIELD; ?>[rva_socialmedia_youtube_url]" value="<?php echo esc_attr( genesis_get_option('rva_socialmedia_youtube_url', RVA_SETTINGS_FIELD ) ); ?>" size="50" /> </p>
 
+	<p>SnapChat URL:<br />
+	<input type="text" name="<?php echo RVA_SETTINGS_FIELD; ?>[rva_socialmedia_snapchat_url]" value="<?php echo esc_attr( genesis_get_option('rva_socialmedia_snapchat_url', RVA_SETTINGS_FIELD ) ); ?>" size="50" /> </p>
+
 	<p><?php _e( 'Check any of the following if you want Facebook, Twitter or Google+ buttons for your posts.', 'genesis' ); ?></p>
 	<table class="form-table ctsettings-social">
 		<tbody>
@@ -225,6 +234,9 @@ function rva_social_metabox() {
 	<?php
 }
 
+/*
+ * Subscription admin metabox
+ */
 function rva_subscription_metabox() { 
 
     print_media_selector( 'rva_subscribe_email_image' );
@@ -232,6 +244,9 @@ function rva_subscription_metabox() {
     print_media_selector( 'rva_subscribe_magazine_image' );
 }
 
+/*
+ * Display a media selector in the admin section
+ */
 function print_media_selector( $setting_id ) {
     $image_id = genesis_get_option( $setting_id, RVA_SETTINGS_FIELD );
     wp_enqueue_media();

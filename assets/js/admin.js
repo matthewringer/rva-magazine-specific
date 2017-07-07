@@ -1,6 +1,4 @@
 
-//rva_admin = '';
-
 var rva_admin = (function($) {
 	'use strict';
 	var self = {
@@ -57,7 +55,4 @@ var rva_admin = (function($) {
 }
 
 return self;
-//rva_admin.display_media_picker(upload_btn, save_field);
 })( window.jQuery );
-
-

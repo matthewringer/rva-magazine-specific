@@ -27,3 +27,39 @@ function rva_ad_shortcode($atts) {
 }
 add_shortcode( 'rva_ad', 'rva_ad_shortcode' );
 
+/**
+ * Short code for GoogleAdSense Placement
+ */
+function rva_AdSense_shortcode($atts) {
+	extract( shortcode_atts( [ 'width' => '728px', 'height' => '90px', 'data-ad-client'=>'ca-pub-5586294093687760', 'data-ad-slot'=>'4032495938' ], $atts) );
+	ob_start();
+	?>
+		<script async src="//"></script>
+		<!-- RVA MAG ADSENSE -->
+		<ins class="adsbygoogle"
+			style="display:inline-block;width:{$width};height:{$height};"
+			data-ad-client="{$data-ad-client}"
+			data-ad-slot="{$data-ad-slot}"></ins>
+		<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
+	<?php
+	return ob_get_clean();
+}
+add_shortcode( 'rva_AdSense', 'rva_AdSense_shortcode' );
+
+/**
+ * AdSense header
+ */
+add_action('wp_head', function(){
+    ?>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-5586294093687760",
+        enable_page_level_ads: true
+    });
+    </script>
+    <?php
+});
+
