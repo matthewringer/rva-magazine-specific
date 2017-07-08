@@ -31,15 +31,15 @@ add_shortcode( 'rva_ad', 'rva_ad_shortcode' );
  * Short code for GoogleAdSense Placement
  */
 function rva_AdSense_shortcode($atts) {
-	extract( shortcode_atts( [ 'width' => '728px', 'height' => '90px', 'data-ad-client'=>'ca-pub-5586294093687760', 'data-ad-slot'=>'4032495938' ], $atts) );
+	extract( shortcode_atts( [ 'width' => '728px', 'height' => '90px', 'data_ad_client'=>'ca-pub-5586294093687760', 'data_ad_slot'=>'4032495938' ], $atts) );
 	ob_start();
 	?>
 		<script async src="//"></script>
 		<!-- RVA MAG ADSENSE -->
 		<ins class="adsbygoogle"
-			style="display:inline-block;width:{$width};height:{$height};"
-			data-ad-client="{$data-ad-client}"
-			data-ad-slot="{$data-ad-slot}"></ins>
+			style="display:inline-block;width:<?php echo $width; ?>;height:<?php echo $height; ?>;"
+			data-ad-client="<?php echo $data_ad_client; ?>"
+			data-ad-slot="<?php echo $data_ad_slot; ?>"></ins>
 		<script>
 		(adsbygoogle = window.adsbygoogle || []).push({});
 		</script>
