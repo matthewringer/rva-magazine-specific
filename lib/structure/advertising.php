@@ -1,7 +1,5 @@
 <?php
 
-//TODO: Move to plugin
-
 if( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**

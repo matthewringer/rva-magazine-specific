@@ -34,6 +34,7 @@ require_once RVA_MAG_DOCROOT . '/lib/admin/admin-stats.php';        // RVA Magaz
 
 // Structure
 require_once RVA_MAG_DOCROOT . '/lib/structure/advertising.php';    // DFP Ad short code
+require_once RVA_MAG_DOCROOT . '/lib/structure/components.php';    // DFP Ad short code
 
 //Single Category selection
 require_once RVA_MAG_DOCROOT . '/vendor/taxonomy-single-term/class.taxonomy-single-term.php';
