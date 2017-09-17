@@ -11,13 +11,29 @@ if( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @return mixed Returns HTML data for the position
  */
-function rva_ad_shortcode($atts) {
+ function rva_ad_shortcode($atts) {
 	ob_start();
 	?>
 	<div class="<?php echo $atts['class']; ?> ">
 		<?php
-		if(array_key_exists ( 'name', $atts)) { 
-			echo do_shortcode('[dfp_ads name="'.$atts['name'].'"]'); 
+		// cat name append
+		$queried_object = get_queried_object();
+		if(is_archive() && is_category()) {
+			$rva_post_category = $queried_object->slug;
+			$append = ( 1 == get_option(RVA_CATEGORY_FIELD_PREPEND_AD_UNIT . '_' . $rva_post_category) )
+			? '_'.$rva_post_category
+			: '';
+		} else {
+			foreach ( explode('/', get_query_var('category_name')) as $segment )
+			{
+				if( 1 == get_option(RVA_CATEGORY_FIELD_PREPEND_AD_UNIT . '_' . $segment) ) {
+					$append = '_'.$segment;
+				}
+			}
+		}
+
+		if(array_key_exists ( 'name', $atts)) {
+			echo do_shortcode('[dfp_ads name="'. $atts['name']. $append .'"]');
 		} ?>
 	</div>
 	<?php

@@ -18,13 +18,13 @@ $postmeta_featured_post = RVA_POST_FIELDS_FEATURED_POST;
  */
 function rva_add_post_meta_boxes() {
 
-    add_meta_box('rva_post_tagline_box', __( 'Post Tagline' ), 'rva_post_tagline_box', ['post'], 'normal', 'high');
+  add_meta_box('rva_post_tagline_box', __( 'Post Tagline' ), 'rva_post_tagline_box', ['post'], 'normal', 'high');
 
-	add_meta_box('rva_post_event_box', __( 'Event Info' ), 'rva_post_event_box', ['post'], 'normal', 'high');
+  add_meta_box('rva_post_event_box', __( 'Event Info' ), 'rva_post_event_box', ['post'], 'normal', 'high');
 
-    add_meta_box('rva_featured_post_box', __( 'Featured Post' ), 'rva_featured_post_box', ['post'], 'side', 'high');
+  add_meta_box('rva_featured_post_box', __( 'Featured Post' ), 'rva_featured_post_box', ['post'], 'side', 'high');
 
-	add_meta_box('rva_post_video_runtime_box', __( 'Video Runtime' ), 'rva_post_video_runtime_box', ['post'], 'side', 'high');
+  add_meta_box('rva_post_video_runtime_box', __( 'Video Runtime' ), 'rva_post_video_runtime_box', ['post'], 'side', 'high');
 
 } add_action( 'add_meta_boxes', 'rva_add_post_meta_boxes' );
 
@@ -35,17 +35,17 @@ function rva_add_post_meta_boxes() {
  * @return Input
  */
 function get_post_featured_field() {
-	$input = new Input(
-		[
-			'id'	=> RVA_POST_FIELDS_FEATURED_POST,
-			'type'  => 'checkbox',
-			'name'  => RVA_POST_FIELDS_FEATURED_POST,
-			'label' => 'Featured Post',
-			'value' => '',
-		]
-	);
+  $input = new Input(
+    [
+      'id'	=> RVA_POST_FIELDS_FEATURED_POST,
+      'type'  => 'checkbox',
+      'name'  => RVA_POST_FIELDS_FEATURED_POST,
+      'label' => 'Featured Post',
+      'value' => '',
+    ]
+  );
 
-	return $input;
+  return $input;
 }
 
 /**
@@ -55,12 +55,12 @@ function get_post_featured_field() {
  */
 function rva_featured_post_box() {
 
-	$post_id = get_the_ID();
-	$input = get_post_featured_field();
+  $post_id = get_the_ID();
+  $input = get_post_featured_field();
 
-	$input->value = get_post_meta( $post_id, $input->name, true );
-	$input->create_input();
-	wp_nonce_field( basename( __FILE__ ), RVA_NONCE );
+  $input->value = get_post_meta( $post_id, $input->name, true );
+  $input->create_input();
+  wp_nonce_field( basename( __FILE__ ), RVA_NONCE );
 
 }
 
@@ -74,21 +74,21 @@ function rva_featured_post_box() {
  */
 function rva_post_featured_box_save( $post_id, $post ) {
 
-	$input = get_post_featured_field();
+  $input = get_post_featured_field();
 
-	// Exits script depending on save status
-	if (
-		wp_is_post_autosave( $post_id )
-		|| wp_is_post_revision( $post_id )
-		|| ! Input::verify_nonce( RVA_NONCE, __FILE__ ) 
-		//|| ! current_user_can( $post_type->cap->edit_post, $post_id )
-	) {
+  // Exits script depending on save status
+  if (
+    wp_is_post_autosave( $post_id )
+    || wp_is_post_revision( $post_id )
+    || ! Input::verify_nonce( RVA_NONCE, __FILE__ ) 
+    //|| ! current_user_can( $post_type->cap->edit_post, $post_id )
+  ) {
 
-		return;
-	}
-	
-	delete_post_meta( $post_id, RVA_POST_FIELDS_FEATURED_POST );
-	Input::update_meta( $post_id, $input );
+    return;
+  }
+  
+  delete_post_meta( $post_id, RVA_POST_FIELDS_FEATURED_POST );
+  Input::update_meta( $post_id, $input );
 
 } add_action( 'save_post', 'rva_post_featured_box_save', 1, 2 );
 
@@ -102,17 +102,17 @@ function rva_post_featured_box_save( $post_id, $post ) {
  */
 function get_post_tagline_field() {
 
-	$input = new Input(
-		[
-			'id'	=> 'rva_post_tagline',
-			'type'  => 'text',
-			'name'  => 'rva_post_tagline',
-			'label' => 'Tagline',
-			'value' => '',
-		]
-	);
+  $input = new Input(
+    [
+      'id'	=> 'rva_post_tagline',
+      'type'  => 'text',
+      'name'  => 'rva_post_tagline',
+      'label' => 'Tagline',
+      'value' => '',
+    ]
+  );
 
-	return $input;
+  return $input;
 }
 
 /**
@@ -122,12 +122,12 @@ function get_post_tagline_field() {
  */
 function rva_post_tagline_box() {
 
-	$post_id = get_the_ID();
-	$input = $input = get_post_tagline_field();;
+  $post_id = get_the_ID();
+  $input = $input = get_post_tagline_field();;
 
-	$input->value = get_post_meta( $post_id, $input->name, true );
-	$input->create_input();
-	wp_nonce_field( basename( __FILE__ ), RVA_NONCE );
+  $input->value = get_post_meta( $post_id, $input->name, true );
+  $input->create_input();
+  wp_nonce_field( basename( __FILE__ ), RVA_NONCE );
 }
 
 /**
@@ -141,19 +141,19 @@ function rva_post_tagline_box() {
  */
 function rva_post_tagline_save( $post_id, $post ) {
 
-	$input = get_post_tagline_field();
+  $input = get_post_tagline_field();
 
-	// Exits script depending on save status
-	if (
-		wp_is_post_autosave( $post_id ) ||
-		wp_is_post_revision( $post_id ) ||
-		! Input::verify_nonce( RVA_NONCE, __FILE__ ) //||
-		//! current_user_can( $post_type->cap->edit_post, $post_id )
-	) {
+  // Exits script depending on save status
+  if (
+    wp_is_post_autosave( $post_id ) ||
+    wp_is_post_revision( $post_id ) ||
+    ! Input::verify_nonce( RVA_NONCE, __FILE__ ) //||
+    //! current_user_can( $post_type->cap->edit_post, $post_id )
+  ) {
 
-		return;
-	}
-	Input::update_meta( $post_id, $input );
+    return;
+  }
+  Input::update_meta( $post_id, $input );
 
 } add_action( 'save_post', 'rva_post_tagline_save', 1, 2 );
 
@@ -166,87 +166,87 @@ function rva_post_tagline_save( $post_id, $post ) {
  * @return array Input
  */
 function get_post_event_fields() {
-	// Date Time
-	$fields[] = new Input(
-		[
-			'id'	=> 'rva_post_event_datetime',
-			'type'  => 'datetime',
-			'name'  => 'rva_post_event_datetime',
-			'label' => 'Date Time',
-			'value' => '',
-		]
-	);
-	// Title
-	$fields[] = new Input(
-		[
-			'id'	=> 'rva_post_event_title',
-			'type'  => 'text',
-			'name'  => 'rva_post_event_title',
-			'label' => 'Title',
-			'value' => '',
-		]
-	);
-	// Description
-	$fields[] = new Input(
-		[
-			'id'	=> 'rva_post_event_description',
-			'type'  => 'textarea',
-			'name'  => 'rva_post_event_description',
-			'label' => 'Description',
-			'value' => '',
-		]
-	);
-	// Venue
-	$fields[] = new Input(
-		[
-			'id'	=> 'rva_post_event_venue',
-			'type'  => 'text',
-			'name'  => 'rva_post_event_venue',
-			'label' => 'Venue',
-			'value' => '',
-		]
-	);
-	// Price
-	$fields[] = new Input(
-		[
-			'id'	=> 'rva_post_event_price',
-			'type'  => 'text',
-			'name'  => 'rva_post_event_price',
-			'label' => 'Price',
-			'value' => '',
-		]
-	);
-	// Tickets Link
-	$fields[] = new Input(
-		[
-			'id'	=> 'rva_post_event_tickets',
-			'type'  => 'text',
-			'name'  => 'rva_post_event_tickets',
-			'label' => 'Tickets Link',
-			'value' => '',
-		]
-	);
-	// Editor's Pick
-	$fields[] = new Input(
-		[
-			'id'	=> 'rva_post_event_editorspick',
-			'type'  => 'checkbox',
-			'name'  => 'rva_post_event_editorspick',
-			'label' => 'Editor\'s Pick',
-			'value' => '',
-		]
-	);
-	// Must See
-	$fields[] = new Input(
-		[
-			'id'	=> 'rva_post_event_mustsee',
-			'type'  => 'checkbox',
-			'name'  => 'rva_post_event_mustsee',
-			'label' => 'Must See',
-			'value' => '',
-		]
-	);
-	return $fields;
+  // Date Time
+  $fields[] = new Input(
+    [
+      'id'	=> 'rva_post_event_datetime',
+      'type'  => 'datetime',
+      'name'  => 'rva_post_event_datetime',
+      'label' => 'Date Time',
+      'value' => '',
+    ]
+  );
+  // Title
+  $fields[] = new Input(
+    [
+      'id'	=> 'rva_post_event_title',
+      'type'  => 'text',
+      'name'  => 'rva_post_event_title',
+      'label' => 'Title',
+      'value' => '',
+    ]
+  );
+  // Description
+  $fields[] = new Input(
+    [
+      'id'	=> 'rva_post_event_description',
+      'type'  => 'textarea',
+      'name'  => 'rva_post_event_description',
+      'label' => 'Description',
+      'value' => '',
+    ]
+  );
+  // Venue
+  $fields[] = new Input(
+    [
+      'id'	=> 'rva_post_event_venue',
+      'type'  => 'text',
+      'name'  => 'rva_post_event_venue',
+      'label' => 'Venue',
+      'value' => '',
+    ]
+  );
+  // Price
+  $fields[] = new Input(
+    [
+      'id'	=> 'rva_post_event_price',
+      'type'  => 'text',
+      'name'  => 'rva_post_event_price',
+      'label' => 'Price',
+      'value' => '',
+    ]
+  );
+  // Tickets Link
+  $fields[] = new Input(
+    [
+      'id'	=> 'rva_post_event_tickets',
+      'type'  => 'text',
+      'name'  => 'rva_post_event_tickets',
+      'label' => 'Tickets Link',
+      'value' => '',
+    ]
+  );
+  // Editor's Pick
+  $fields[] = new Input(
+    [
+      'id'	=> 'rva_post_event_editorspick',
+      'type'  => 'checkbox',
+      'name'  => 'rva_post_event_editorspick',
+      'label' => 'Editor\'s Pick',
+      'value' => '',
+    ]
+  );
+  // Must See
+  $fields[] = new Input(
+    [
+      'id'	=> 'rva_post_event_mustsee',
+      'type'  => 'checkbox',
+      'name'  => 'rva_post_event_mustsee',
+      'label' => 'Must See',
+      'value' => '',
+    ]
+  );
+  return $fields;
 }
 
 /**
@@ -256,17 +256,17 @@ function get_post_event_fields() {
  */
 function rva_post_event_box() {
 
-	$post_id = get_the_ID();
-	$fields = get_post_event_fields();
+  $post_id = get_the_ID();
+  $fields = get_post_event_fields();
 
-	echo '<table>';
-	foreach( $fields as $input ) {
-		$input->value = get_post_meta( $post_id, $input->name, true );
-		$input->create_input();
-	}
-	echo '</table>';
+  echo '<table>';
+  foreach( $fields as $input ) {
+    $input->value = get_post_meta( $post_id, $input->name, true );
+    $input->create_input();
+  }
+  echo '</table>';
 
-	wp_nonce_field( basename( __FILE__ ), RVA_NONCE );
+  wp_nonce_field( basename( __FILE__ ), RVA_NONCE );
 }
 
 /**
@@ -279,22 +279,22 @@ function rva_post_event_box() {
  * @return null
  */
 function rva_post_event_save( $post_id, $post ) {
-	//$input = get_post_event_fields();
-	// Exits script depending on save status
-	if (
-		wp_is_post_autosave( $post_id ) ||
-		wp_is_post_revision( $post_id ) ||
-		! Input::verify_nonce( RVA_NONCE, __FILE__ ) //||
-		//! current_user_can( $post_type->cap->edit_post, $post_id )
-	) {
+  //$input = get_post_event_fields();
+  // Exits script depending on save status
+  if (
+    wp_is_post_autosave( $post_id ) ||
+    wp_is_post_revision( $post_id ) ||
+    ! Input::verify_nonce( RVA_NONCE, __FILE__ ) //||
+    //! current_user_can( $post_type->cap->edit_post, $post_id )
+  ) {
 
-		return;
-	}
+    return;
+  }
 
-	$fields = get_post_event_fields();
-	foreach( $fields as $input ) {
-		Input::update_meta( $post_id, $input );
-	}
+  $fields = get_post_event_fields();
+  foreach( $fields as $input ) {
+    Input::update_meta( $post_id, $input );
+  }
 
 } add_action( 'save_post', 'rva_post_event_save', 1, 2 );
 
@@ -305,17 +305,17 @@ function rva_post_event_save( $post_id, $post ) {
  * @return Input
  */
 function get_post_video_runtime_field() {
-	$input = new Input(
-		[
-			'id'	=> 'rva_post_video_runtime',
-			'type'  => 'text',
-			'name'  => 'rva_post_video_runtime',
-			'label' => 'Video Runtime',
-			'value' => '',
-		]
-	);
+  $input = new Input(
+    [
+      'id'	=> 'rva_post_video_runtime',
+      'type'  => 'text',
+      'name'  => 'rva_post_video_runtime',
+      'label' => 'Video Runtime',
+      'value' => '',
+    ]
+  );
 
-	return $input;
+  return $input;
 }
 
 /**
@@ -325,12 +325,12 @@ function get_post_video_runtime_field() {
  */
 function rva_post_video_runtime_box() {
 
-	$post_id = get_the_ID();
-	$input = get_post_video_runtime_field();
+  $post_id = get_the_ID();
+  $input = get_post_video_runtime_field();
 
-	$input->value = get_post_meta( $post_id, $input->name, true );
-	$input->create_input();
-	wp_nonce_field( basename( __FILE__ ), RVA_NONCE );
+  $input->value = get_post_meta( $post_id, $input->name, true );
+  $input->create_input();
+  wp_nonce_field( basename( __FILE__ ), RVA_NONCE );
 
 }
 
@@ -344,20 +344,20 @@ function rva_post_video_runtime_box() {
  */
 function rva_post_video_runtime_box_save( $post_id, $post ) {
 
-	$input = get_post_video_runtime_field();
+  $input = get_post_video_runtime_field();
 
-	// Exits script depending on save status
-	if (
-		wp_is_post_autosave( $post_id )
-		|| wp_is_post_revision( $post_id )
-		|| ! Input::verify_nonce( RVA_NONCE, __FILE__ ) 
-		//|| ! current_user_can( $post_type->cap->edit_post, $post_id )
-	) {
+  // Exits script depending on save status
+  if (
+    wp_is_post_autosave( $post_id )
+    || wp_is_post_revision( $post_id )
+    || ! Input::verify_nonce( RVA_NONCE, __FILE__ ) 
+    //|| ! current_user_can( $post_type->cap->edit_post, $post_id )
+  ) {
 
-		return;
-	}
+    return;
+  }
 
-	Input::update_meta( $post_id, $input );
+  Input::update_meta( $post_id, $input );
 
 } add_action( 'save_post', 'rva_post_video_runtime_box_save', 1, 2 );
 
