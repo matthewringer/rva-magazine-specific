@@ -2,6 +2,40 @@
 
 if( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+function get_ad_unit_ID_by_code($code) {
+	global $dfp_ad_units;
+	if(!isset($dfp_ad_units)) {
+		$dfp_ad_units = get_posts([
+			'post_type' => 'dfp_ads',
+			'post_status' => 'publish',
+			'numberposts' => -1
+			]);
+	}
+	foreach($posts as $p) {
+		$meta = get_post_meta($p->ID);
+		if($meta['dfp_ad_code'][0] == $code) { return $p->ID; }
+	}
+	return null;
+}
+
+function get_ad_unit_ID_by_title($title) {
+	
+	global $dfp_ad_units;
+
+	if(!isset($dfp_ad_units)) {
+		$dfp_ad_units = get_posts([
+			'post_type' => 'dfp_ads',
+			'post_status' => 'publish',
+			'numberposts' => -1
+			]);
+	}
+
+	foreach($dfp_ad_units as $p) {
+		if($p->post_title == $title) { return $p->ID; }
+	}
+	return null;
+}
+
 /**
  * Creates shortcode for rva_ad, which prints a google dfp ad_unit
  *
@@ -11,30 +45,38 @@ if( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @return mixed Returns HTML data for the position
  */
- function rva_ad_shortcode($atts) {
+function rva_ad_shortcode($atts) {
+	if(!array_key_exists('name', $atts)) return '';
+	$title = $atts['name'];
 	ob_start();
 	?>
 	<div class="<?php echo $atts['class']; ?> ">
-		<?php
-		// cat name append
+	<?php
+	// For ad_units on category or archive pages
+	if(is_archive() && is_category()) {
 		$queried_object = get_queried_object();
-		if(is_archive() && is_category()) {
-			$rva_post_category = $queried_object->slug;
-			$append = ( 1 == get_option(RVA_CATEGORY_FIELD_PREPEND_AD_UNIT . '_' . $rva_post_category) )
-			? '_'.$rva_post_category
-			: '';
-		} else {
-			foreach ( explode('/', get_query_var('category_name')) as $segment )
-			{
-				if( 1 == get_option(RVA_CATEGORY_FIELD_PREPEND_AD_UNIT . '_' . $segment) ) {
-					$append = '_'.$segment;
-				}
+		$rva_post_category = $queried_object->slug;
+		$ad_unit_id = null;
+		// Check to see if the category is overriden
+		if ( get_option(RVA_CATEGORY_FIELD_PREPEND_AD_UNIT . '_' . $rva_post_category) ) {
+			$ad_unit_id = get_ad_unit_ID_by_title($title.'_'.$rva_post_category);
+		}
+	} else { // For ad units on all other post types
+		foreach ( explode('/', get_query_var('category_name')) as $segment )
+		{
+			if( 1 == get_option(RVA_CATEGORY_FIELD_PREPEND_AD_UNIT . '_' . $segment) ) {
+				$ad_unit_id = get_ad_unit_ID_by_title($title.'_'.$segment);
 			}
 		}
-
-		if(array_key_exists ( 'name', $atts)) {
-			echo do_shortcode('[dfp_ads name="'. $atts['name']. $append .'"]');
-		} ?>
+	}
+	//If there was not ad_unit for the override get the default
+	echo $ad_unit_id;
+	if ( !isset($ad_unit_id) ) {
+		echo 'I am a default!!';
+		$ad_unit_id = get_ad_unit_ID_by_title($title);
+	}
+	echo do_shortcode('[dfp_ads id="'.$ad_unit_id.'"]');
+	?>
 	</div>
 	<?php
 	return ob_get_clean();
