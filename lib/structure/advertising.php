@@ -11,7 +11,7 @@ function get_ad_unit_ID_by_code($code) {
 			'numberposts' => -1
 			]);
 	}
-	foreach($posts as $p) {
+	foreach($dfp_ad_units as $p) {
 		$meta = get_post_meta($p->ID);
 		if($meta['dfp_ad_code'][0] == $code) { return $p->ID; }
 	}
@@ -46,34 +46,32 @@ function get_ad_unit_ID_by_title($title) {
  * @return mixed Returns HTML data for the position
  */
 function rva_ad_shortcode($atts) {
-	if(!array_key_exists('name', $atts)) return '';
-	$title = $atts['name'];
+	if(!array_key_exists('code', $atts)) return '';
+	$code = $atts['code'];
 	ob_start();
 	?>
 	<div class="<?php echo $atts['class']; ?> ">
 	<?php
+	$ad_unit_id = null;
 	// For ad_units on category or archive pages
 	if(is_archive() && is_category()) {
 		$queried_object = get_queried_object();
 		$rva_post_category = $queried_object->slug;
-		$ad_unit_id = null;
 		// Check to see if the category is overriden
 		if ( get_option(RVA_CATEGORY_FIELD_PREPEND_AD_UNIT . '_' . $rva_post_category) ) {
-			$ad_unit_id = get_ad_unit_ID_by_title($title.'_'.$rva_post_category);
+			$ad_unit_id = get_ad_unit_ID_by_code($code.'_'.$rva_post_category);
 		}
 	} else { // For ad units on all other post types
 		foreach ( explode('/', get_query_var('category_name')) as $segment )
 		{
 			if( 1 == get_option(RVA_CATEGORY_FIELD_PREPEND_AD_UNIT . '_' . $segment) ) {
-				$ad_unit_id = get_ad_unit_ID_by_title($title.'_'.$segment);
+				$ad_unit_id = get_ad_unit_ID_by_code($code.'_'.$segment);
 			}
 		}
 	}
 	//If there was not ad_unit for the override get the default
-	echo $ad_unit_id;
 	if ( !isset($ad_unit_id) ) {
-		echo 'I am a default!!';
-		$ad_unit_id = get_ad_unit_ID_by_title($title);
+		$ad_unit_id = get_ad_unit_ID_by_code($code);
 	}
 	echo do_shortcode('[dfp_ads id="'.$ad_unit_id.'"]');
 	?>
